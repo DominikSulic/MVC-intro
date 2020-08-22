@@ -1,0 +1,215 @@
+﻿
+@{
+    ViewBag.Title = "Play";
+}
+
+
+
+<br />
+<h2>Snake game</h2>
+<div id="Score">Score: </div>
+<br />
+<button onclick="resetGameplay()">
+    <img src="~/Images/reload.png" width="25" height="25" />
+</button>
+
+<form id="myForm" name="myForm" action="/Home/Play" method="Post">
+    <input id="Idhighscore" type="hidden" name="highscore" value="0" />
+</form>
+
+<canvas id="gameCanvas" width="1000" height="600">
+</canvas>
+
+<script>
+    var c = document.getElementById("gameCanvas");
+    var s = document.getElementById("Score");
+    var context = c.getContext("2d");
+    context.beginPath();
+    context.rect(0, 0, 1000, 600);
+    context.fillStyle = "gray";
+    context.fill();
+
+    const GAME_SPEED = 50;
+    const DOWN_KEY = 40;
+    const LEFT_KEY = 37;
+    const RIGHT_KEY = 39;
+    const UP_KEY = 38;
+    var gameIsOver = false;
+    var ateFood = false;
+    var score = 0;
+    // d stands for direction, 1-down, 2-left, 3-right, 4-up
+    var currentDirection = 3;
+    var lastDirection = 3;
+    var snake = [];
+    var food = [{ x: 0, y: 0 }];
+    var firstTime = true;
+
+    // also used to set up things when the game initially loads
+    function resetGameplay() {
+        if (!firstTime) {
+            document.getElementById("Idhighscore").value = score;
+            document.myForm.submit();
+        }
+
+
+        snake = [];
+        snake = [{ x: 150, y: 150 }, { x: 140, y: 150 },
+            { x: 130, y: 150 }, { x: 120, y: 150 }, { x: 110, y: 150 }];
+        currentDirection = 3;
+        lastDirection = 3;
+        score = 0;
+        s.innerHTML = "Score: " + score;
+        snake.forEach(drawSnake);
+        createFood();
+        drawFood();
+        main();
+        firstTime = false;
+    }
+
+    function createFood() {
+        food[0].x = Math.round((Math.random() * (800 - 0) + 0) / 10) * 10;
+        food[0].y = Math.round((Math.random() * (600 - 0) + 0) / 10) * 10;
+    }
+
+    function snakeAteTheFood() {
+        if (snake[0].x === food[0].x && snake[0].y === food[0].y) {
+            score += 10;
+            s.innerHTML = "Score: " + score;
+            return true;
+        }
+        else return false;
+    }
+
+    function drawSnake(snakePart) {
+        context.fillStyle = 'lightgreen';
+        context.fillRect(snakePart.x, snakePart.y, 10, 10);
+        context.strokeRect(snakePart.x, snakePart.y, 10, 10);
+    }
+
+    function drawFood() {
+        context.fillStyle = 'red';
+        context.fillRect(food[0].x, food[0].y, 10, 10);
+        context.strokeRect(food[0].x, food[0].y, 10, 10);
+    }
+
+    function isGameOver() {
+        for (var i = 1; i < snake.length; i++) {
+            if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
+                return true;
+            }
+        }
+        if (snake[0].x >= 990 || snake[0].x <= 0 || snake[0].y <= 0 || snake[0].y >= 590) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function updateSnakePosition(currentDirection, snakeAteFood) {
+        var newSnakeHead = { x: snake[0].x, y: snake[0].y, d: snake[0].d };
+
+        if (currentDirection == 1) {
+            // going down
+
+            //if the user hits "down" when you're moving up, just continue moving up
+            if (lastDirection === 4) {
+                newSnakeHead.y -= 10;
+                currentDirection = 4;
+            }
+            else {
+                newSnakeHead.y += 10;
+            }
+
+            snake.unshift(newSnakeHead);
+            if (!snakeAteFood) snake.pop();
+        }
+        else if (currentDirection == 2) {
+            // going left
+
+            if (lastDirection === 3) {
+                newSnakeHead.x += 10;
+                currentDirection = 3;
+            }
+            else {
+                newSnakeHead.x -= 10;
+            }
+
+            snake.unshift(newSnakeHead);
+            if (!snakeAteFood) snake.pop();
+        }
+        else if (currentDirection == 3) {
+            // going right
+
+            if (lastDirection === 2) {
+                newSnakeHead.x -= 10;
+                currentDirection = 2;
+            }
+            else {
+                newSnakeHead.x += 10;
+            }
+
+            snake.unshift(newSnakeHead);
+            if (!snakeAteFood) snake.pop();
+        }
+        else if (currentDirection == 4) {
+            //going up
+
+            if (lastDirection === 1) {
+                newSnakeHead.y += 10;
+                currentDirection = 1;
+            }
+            else {
+                newSnakeHead.y -= 10;
+            }
+
+            snake.unshift(newSnakeHead);
+            if (!snakeAteFood) snake.pop();
+        }
+        lastDirection = currentDirection;
+    }
+
+    function main() {
+        if (isGameOver()) { return; }
+
+        setTimeout(function onTick() {
+            // redraws the screen
+            context.fillStyle = 'gray';
+            context.fillRect(0, 0, c.clientWidth, c.clientHeight);
+            // updates the position of the snake
+            ateFood = snakeAteTheFood();
+            updateSnakePosition(currentDirection, ateFood);
+            if (ateFood) { createFood(); }
+            drawFood();
+            // draws the snake
+            snake.forEach(drawSnake);
+            main();
+        }, GAME_SPEED)
+    }
+
+    function changeMovementDirection(event) {
+        const keyPressed = event.keyCode;
+        event.preventDefault();
+
+        switch (keyPressed) {
+            case DOWN_KEY:
+                currentDirection = 1;
+                break;
+            case LEFT_KEY:
+                currentDirection = 2;
+                break;
+            case RIGHT_KEY:
+                currentDirection = 3;
+                break;
+            case UP_KEY:
+                currentDirection = 4;
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    document.addEventListener("keydown", changeMovementDirection)
+    resetGameplay();
+</script>

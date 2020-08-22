@@ -1,0 +1,10 @@
+D:\Programming\c# advanced stuff\MVCSnake\HighscoreDB\bin\Debug\HighscoreDB.dacpac
+D:\Programming\c# advanced stuff\MVCSnake\HighscoreDB\bin\Debug\HighscoreDB.dll
+D:\Programming\c# advanced stuff\MVCSnake\HighscoreDB\bin\Debug\HighscoreDB.pdb
+D:\Programming\c# advanced stuff\MVCSnake\HighscoreDB\obj\Debug\HighscoreDB.dll
+D:\Programming\c# advanced stuff\MVCSnake\HighscoreDB\obj\Debug\HighscoreDB.pdb
+D:\Programming\c# advanced stuff\MVCSnake\HighscoreDB\obj\Debug\HighscoreDB.sqlprojAssemblyReference.cache
+D:\Programming\c# advanced stuff\MVCSnake\HighscoreDB\obj\Debug\Model.xml
+D:\Programming\c# advanced stuff\MVCSnake\HighscoreDB\obj\Debug\refactor.xml
+D:\Programming\c# advanced stuff\MVCSnake\HighscoreDB\obj\Debug\postdeploy.sql
+D:\Programming\c# advanced stuff\MVCSnake\HighscoreDB\obj\Debug\predeploy.sql

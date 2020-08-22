@@ -1,0 +1,6 @@
+D:\Programming\c# advanced stuff\MVCSnake\DataLibrary\bin\Debug\DataLibrary.dll
+D:\Programming\c# advanced stuff\MVCSnake\DataLibrary\bin\Debug\DataLibrary.pdb
+D:\Programming\c# advanced stuff\MVCSnake\DataLibrary\obj\Debug\DataLibrary.csprojAssemblyReference.cache
+D:\Programming\c# advanced stuff\MVCSnake\DataLibrary\obj\Debug\DataLibrary.csproj.CoreCompileInputs.cache
+D:\Programming\c# advanced stuff\MVCSnake\DataLibrary\obj\Debug\DataLibrary.dll
+D:\Programming\c# advanced stuff\MVCSnake\DataLibrary\obj\Debug\DataLibrary.pdb
